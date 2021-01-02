@@ -1,0 +1,31 @@
+11:50:35 **** Incremental Build of configuration Nios II for project final_app ****
+make all 
+Info: Building ../final_app_bsp/
+E:/QuatusPrime/nios2eds/bin/gnu/H-x86_64-mingw32/bin/make --no-print-directory -C ../final_app_bsp/
+[BSP build complete]
+Info: Compiling main.c to obj/default/main.o
+nios2-elf-gcc -xc -MP -MMD -c -I../final_app_bsp//HAL/inc -I../final_app_bsp/ -I../final_app_bsp//drivers/inc  -pipe -D__hal__ -DALT_NO_INSTRUCTION_EMULATION -DALT_SINGLE_THREADED    -O0 -g -Wall   -mno-hw-div -mno-hw-mul -mno-hw-mulx -mgpopt=global  -o obj/default/main.o main.c
+main.c: In function 'main':
+main.c:655:12: warning: unused variable 'live_icear' [-Wunused-variable]
+  short int live_icear[2];
+            ^
+main.c:654:6: warning: unused variable 'v_x_icear' [-Wunused-variable]
+  int v_x_icear[2];
+      ^
+main.c:99:15: warning: unused variable 'v_enemy4' [-Wunused-variable]
+  unsigned int v_enemy4 = 25;
+               ^
+main.c:86:12: warning: variable 'cnt_skull' set but not used [-Wunused-but-set-variable]
+  short int cnt_skull[2];
+            ^
+Info: Linking final_app.elf
+nios2-elf-g++  -T'../final_app_bsp//linker.x' -msys-crt0='../final_app_bsp//obj/HAL/src/crt0.o' -msys-lib=hal_bsp -L../final_app_bsp/   -Wl,-Map=final_app.map   -O0 -g -Wall   -mno-hw-div -mno-hw-mul -mno-hw-mulx -mgpopt=global  -o final_app.elf obj/default/io_handler.o obj/default/keycall.o obj/default/main.o obj/default/main_lab8.o obj/default/main_lab9.o obj/default/usb.o -lm -msys-lib=m
+nios2-elf-insert final_app.elf --thread_model hal --cpu_name nios2_gen2_0 --qsys true --simulation_enabled false --id 0 --sidp 0xa8 --timestamp 1607429957 --stderr_dev jtag_uart_0 --stdin_dev jtag_uart_0 --stdout_dev jtag_uart_0 --sopc_system_name final_soc --quartus_project_dir "E:/Study/ECE385lab/FinalProject/Project" --jdi E:/Study/ECE385lab/FinalProject/Project/software/final_app_bsp/../../lab8.jdi --sopcinfo E:/Study/ECE385lab/FinalProject/Project/software/final_app_bsp/../../final_soc.sopcinfo
+Info: (final_app.elf) 149 KBytes program size (code + initialized data).
+Info:                 130914 KBytes free for stack + heap.
+Info: Creating final_app.objdump
+nios2-elf-objdump --disassemble --syms --all-header --source final_app.elf >final_app.objdump
+[final_app build complete]
+
+11:50:37 Build Finished (took 2s.672ms)
+

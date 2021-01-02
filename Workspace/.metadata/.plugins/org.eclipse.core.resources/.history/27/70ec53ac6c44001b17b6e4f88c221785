@@ -1,0 +1,173 @@
+/*
+ * main.c
+ *
+ *  Created on: 2020Äê12ÔÂ8ÈÕ
+ *      Author: 45242
+ */
+
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <io.h>
+#include <fcntl.h>
+
+#include "system.h"
+#include "alt_types.h"
+#include <unistd.h>  // usleep
+#include "sys/alt_irq.h"
+#include "io_handler.h"
+
+#include "cy7c67200.h"
+#include "usb.h"
+#include "lcp_cmd.h"
+#include "lcp_data.h"
+
+#include "keycall.h"
+
+volatile unsigned int * reg_ptr = (unsigned int *) 0x00000100;
+//----------------------------------------------------------------------------------------//
+//
+//                                Main function
+//
+//----------------------------------------------------------------------------------------//
+int main(void)
+{
+	short int keycodes[3];
+	int x, y;
+	int v_x, v_y;
+	int x_dart[4], y_dart[4];
+	int v_x_dart[4];
+	char face_r;
+	char cnt_dart[4], cd_dart;
+	unsigned int on_dart[4];
+	short int idx_dart, i_dart;
+	unsigned int vel_x = 0x2;
+	unsigned int vel_y = 0x1;
+	unsigned int vel_dart = 0x4;
+	unsigned int ground = 0x0080;
+
+	char on_gnd;
+	keycall_init();
+	printf("\nKeycall end.\n");
+
+	int i;
+	for(i = 0; i < 3; i++){
+		keycodes[i] = 0;
+	}
+
+	char key_char;
+	while (1){
+		key_char = getkeys(keycodes);
+		printf("key_char;%x\n", key_char);
+		if(key_char & 0x40) break;
+	}
+	x = 0x0050;
+	y = ground;
+	v_x = 0;
+	v_y = 0;
+	on_gnd = 1;
+	face_r = 1;
+
+	cd_dart = 0;
+	idx_dart = 0;
+	for (i_dart = 0; i_dart < 4; i_dart++){
+		on_dart[i_dart] = 0;
+		x_dart[i_dart] = 0;
+		y_dart[i_dart] = 0;
+		v_x_dart[i_dart] = 0;
+		cnt_dart[i_dart] = 0;
+		on_dart[i_dart] = 0;
+	}
+
+	printf("Start!\n");
+	while(1){
+		while(!reg_ptr[63]){}
+		reg_ptr[1] = ((y << 16) + x) ^ 0xfc000000;
+		reg_ptr[2] = ((y_dart[0] << 16) + x_dart[0]) ^ on_dart[0];
+		reg_ptr[3] = ((y_dart[1] << 16) + x_dart[1]) ^ on_dart[1];
+		reg_ptr[4] = ((y_dart[2] << 16) + x_dart[2]) ^ on_dart[2];
+		reg_ptr[5] = ((y_dart[3] << 16) + x_dart[3]) ^ on_dart[3];
+		//printf("coordinates;%x\n", (y << 16) + x);
+		reg_ptr[62] = 1;
+		reg_ptr[62] = 0;
+		v_x = 0;
+
+
+		key_char = getkeys(keycodes);
+		// D 08
+		if (key_char & 0x08){
+			v_x += vel_x;
+			face_r = 1;
+		}
+		// A 02
+		if (key_char & 0x02){
+			v_x -= vel_x;
+			face_r = 0;
+		}
+		// K
+		if ((key_char & 0x20) && on_gnd){
+			v_y = -24;
+			on_gnd = 0;
+		}
+
+		//J
+		if ((key_char & 0x10) && !cd_dart){
+			cnt_dart[idx_dart] = 60;
+			cd_dart = 20;
+			x_dart[idx_dart] = x;
+			y_dart[idx_dart] = y;
+			on_dart[idx_dart] = 0x80000000;
+			if (face_r){
+				v_x_dart[idx_dart] = vel_dart;
+			} else{
+				v_x_dart[idx_dart] = -vel_dart;
+			}
+			if(idx_dart++ == 3){
+				idx_dart = 0;
+			}
+		}
+
+		/////////////////dart/////////////////
+		for(i_dart = 0; i_dart < 4; i_dart++){
+			if(cnt_dart[i_dart] > 0){
+				cnt_dart[i_dart]--;
+				x_dart[i_dart] += v_x_dart[i_dart];
+			}
+			else{
+				on_dart[i_dart] = 0;
+			}
+		}
+		if(cd_dart > 0){
+			cd_dart--;
+		}
+		//////////////////////////////////////
+		if (!on_gnd){
+			if (y >= ground){
+				if (v_y > 0){
+					v_y = 0;
+				}
+				y = ground;
+				on_gnd = 1;
+			}
+			else{
+				v_y += vel_y;
+			}
+		}
+		y += v_y;
+		x += v_x;
+		if (y < 0){
+			y = 0;
+		}
+		if (x < 0){
+			x = 0;
+		}
+		if (x > 639){
+			x = 639;
+		}
+	}
+	return 0;
+}
+
+
+

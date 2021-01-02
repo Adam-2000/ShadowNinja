@@ -1,0 +1,78 @@
+
+State Machine - |final_toplevel|final_soc:final_qsystem|final_soc_sdram:sdram|m_next
+Name m_next.010000000 m_next.000010000 m_next.000001000 m_next.000000001 
+m_next.000000001 0 0 0 0 
+m_next.000001000 0 0 1 1 
+m_next.000010000 0 1 0 1 
+m_next.010000000 1 0 0 1 
+
+State Machine - |final_toplevel|final_soc:final_qsystem|final_soc_sdram:sdram|m_state
+Name m_state.100000000 m_state.010000000 m_state.001000000 m_state.000100000 m_state.000010000 m_state.000001000 m_state.000000100 m_state.000000010 m_state.000000001 
+m_state.000000001 0 0 0 0 0 0 0 0 0 
+m_state.000000010 0 0 0 0 0 0 0 1 1 
+m_state.000000100 0 0 0 0 0 0 1 0 1 
+m_state.000001000 0 0 0 0 0 1 0 0 1 
+m_state.000010000 0 0 0 0 1 0 0 0 1 
+m_state.000100000 0 0 0 1 0 0 0 0 1 
+m_state.001000000 0 0 1 0 0 0 0 0 1 
+m_state.010000000 0 1 0 0 0 0 0 0 1 
+m_state.100000000 1 0 0 0 0 0 0 0 1 
+
+State Machine - |final_toplevel|final_soc:final_qsystem|final_soc_sdram:sdram|i_next
+Name i_next.111 i_next.101 i_next.010 i_next.000 
+i_next.000 0 0 0 0 
+i_next.010 0 0 1 1 
+i_next.101 0 1 0 1 
+i_next.111 1 0 0 1 
+
+State Machine - |final_toplevel|final_soc:final_qsystem|final_soc_sdram:sdram|i_state
+Name i_state.111 i_state.101 i_state.011 i_state.010 i_state.001 i_state.000 
+i_state.000 0 0 0 0 0 0 
+i_state.001 0 0 0 0 1 1 
+i_state.010 0 0 0 1 0 1 
+i_state.011 0 0 1 0 0 1 
+i_state.101 0 1 0 0 0 1 
+i_state.111 1 0 0 0 0 1 
+
+State Machine - |final_toplevel|final_soc:final_qsystem|final_soc_nios2_gen2_0:nios2_gen2_0|final_soc_nios2_gen2_0_cpu:cpu|final_soc_nios2_gen2_0_cpu_nios2_oci:the_final_soc_nios2_gen2_0_cpu_nios2_oci|final_soc_nios2_gen2_0_cpu_debug_slave_wrapper:the_final_soc_nios2_gen2_0_cpu_debug_slave_wrapper|final_soc_nios2_gen2_0_cpu_debug_slave_tck:the_final_soc_nios2_gen2_0_cpu_debug_slave_tck|DRsize
+Name DRsize.101 DRsize.100 DRsize.011 DRsize.010 DRsize.001 DRsize.000 
+DRsize.000 0 0 0 0 0 0 
+DRsize.001 0 0 0 0 1 1 
+DRsize.010 0 0 0 1 0 1 
+DRsize.011 0 0 1 0 0 1 
+DRsize.100 0 1 0 0 0 1 
+DRsize.101 1 0 0 0 0 1 
+
+State Machine - |final_toplevel|final_soc:final_qsystem|RegFile:register_file_0|state
+Name state.draw_kill state.draw_die state.draw_boss state.draw_status state.draw_icons state.draw_objects state.draw_backgroundf state.draw_backgroundb state.ready state.finish state.ongo 
+state.ongo 0 0 0 0 0 0 0 0 0 0 0 
+state.finish 0 0 0 0 0 0 0 0 0 1 1 
+state.ready 0 0 0 0 0 0 0 0 1 0 1 
+state.draw_backgroundb 0 0 0 0 0 0 0 1 0 0 1 
+state.draw_backgroundf 0 0 0 0 0 0 1 0 0 0 1 
+state.draw_objects 0 0 0 0 0 1 0 0 0 0 1 
+state.draw_icons 0 0 0 0 1 0 0 0 0 0 1 
+state.draw_status 0 0 0 1 0 0 0 0 0 0 1 
+state.draw_boss 0 0 1 0 0 0 0 0 0 0 1 
+state.draw_die 0 1 0 0 0 0 0 0 0 0 1 
+state.draw_kill 1 0 0 0 0 0 0 0 0 0 1 
+
+State Machine - |final_toplevel|final_soc:final_qsystem|RegFile:register_file_0|boss:boss_instance|state
+Name state.sleep state.awake state.check 
+state.sleep 0 0 0 
+state.check 1 0 1 
+state.awake 1 1 0 
+
+State Machine - |final_toplevel|final_soc:final_qsystem|RegFile:register_file_0|object:object_instance|state
+Name state.sleep state.awake state.check 
+state.sleep 0 0 0 
+state.check 1 0 1 
+state.awake 1 1 0 
+
+State Machine - |final_toplevel|final_soc:final_qsystem|RegFile:register_file_0|status:status_instance|state
+Name state.life state.frame_energy state.frame_life state.sleep state.energy 
+state.sleep 0 0 0 0 0 
+state.frame_life 0 0 1 1 0 
+state.frame_energy 0 1 0 1 0 
+state.life 1 0 0 1 0 
+state.energy 0 0 0 1 1 

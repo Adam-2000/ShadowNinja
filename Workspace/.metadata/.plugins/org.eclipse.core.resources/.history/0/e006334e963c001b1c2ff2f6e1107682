@@ -1,0 +1,76 @@
+/*
+ * main.c
+ *
+ *  Created on: 2020Äê12ÔÂ8ÈÕ
+ *      Author: 45242
+ */
+
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <io.h>
+#include <fcntl.h>
+
+#include "system.h"
+#include "alt_types.h"
+#include <unistd.h>  // usleep
+#include "sys/alt_irq.h"
+#include "io_handler.h"
+
+#include "cy7c67200.h"
+#include "usb.h"
+#include "lcp_cmd.h"
+#include "lcp_data.h"
+
+#include "keycall.h"
+
+volatile unsigned int * reg_ptr = (unsigned int *) 0x00000100;
+//----------------------------------------------------------------------------------------//
+//
+//                                Main function
+//
+//----------------------------------------------------------------------------------------//
+int main(void)
+{
+	short int keycodes[3];
+	unsigned int y_x;
+	int move;
+	unsigned int vel_x = 0x1;
+	unsigned int vel_y = 0x10000;
+
+	keycall_init();
+	printf("\nKeycall end.\n");
+
+	int i;
+	for(i = 0; i < 3; i++){
+		keycodes[i] = 0;
+	}
+
+	char key_char;
+	while (1){
+		key_char = getkeys(keycodes);
+		if(key_char & 0x80) break;
+	}
+	y_x = 0x00f00140;
+	printf("Start!\n");
+	while(1){
+		while(!reg_ptr[63]){}
+		reg_ptr[1] = y_x;
+		reg_ptr[62] = 1;
+		reg_ptr[62] = 0;
+		move = 0;
+		key_char = getkeys(keycodes);
+		if (getkeys & 0x8){
+			move += vel_x;
+		}
+		if (getkeys & 0x2){
+			move -= vel_x;
+		}
+		y_x += move;
+	}
+	return 0;
+}
+
+
+

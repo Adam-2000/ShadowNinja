@@ -1,0 +1,59 @@
+/*
+ * main.c
+ *
+ *  Created on: 2020Äê12ÔÂ8ÈÕ
+ *      Author: 45242
+ */
+
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <io.h>
+#include <fcntl.h>
+
+#include "system.h"
+#include "alt_types.h"
+#include <unistd.h>  // usleep
+#include "sys/alt_irq.h"
+#include "io_handler.h"
+
+#include "cy7c67200.h"
+#include "usb.h"
+#include "lcp_cmd.h"
+#include "lcp_data.h"
+
+#include "keycall.h"
+
+volatile unsigned int * reg_ptr = (unsigned int *) 0x100;
+//----------------------------------------------------------------------------------------//
+//
+//                                Main function
+//
+//----------------------------------------------------------------------------------------//
+int main(void)
+{
+	keycall_init();
+	printf("Keycall end.");
+	short int keycodes[3];
+	int i;
+	for(i = 0; i < 3; i++){
+		keycodes[i] = 0;
+	}
+
+	char* tempstr;
+	while (1){
+		printf("main found key code:%04x, %04x, %04x\n", keycodes[0], keycodes[1],keycodes[2]);
+		printf("getchar\n");
+		scanf("%s", tempstr);
+		printf("tempchar:%s\n", tempstr);
+		keycall(keycodes);
+		printf("main found key code:%04x, %04x, %04x\n", keycodes[0], keycodes[1],keycodes[2]);
+		usleep(100000);
+	}
+
+	return 0;
+}
+
+
+

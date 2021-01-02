@@ -1,0 +1,14 @@
+/*
+ * keycall.h
+ *
+ *  Created on: 2020Äê12ÔÂ8ÈÕ
+ *      Author: 45242
+ */
+
+#ifndef KEYCALL_H_
+#define KEYCALL_H_
+
+int keycall_init(void);
+short int* keycall(short int keycodes[3]);
+
+#endif /* KEYCALL_H_ */
